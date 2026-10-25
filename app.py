@@ -7,6 +7,8 @@ import asyncpg
 from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
+from aiogram.client.session.aiohttp import AiohttpSession
+from aiogram.client.telegram import TelegramAPIServer
 
 from config import Settings
 from utils.logging_config import setup_logging
@@ -80,8 +82,17 @@ async def run() -> None:
 
     pool = await create_database_pool()
 
+    session = AiohttpSession(
+        api=TelegramAPIServer.from_base(
+            os.environ.get("TELEGRAM_API_URL", "http://tgapi:8081"),
+            is_local=True,
+        ),
+        timeout=3600,
+    )
+
     bot = Bot(
         token=settings.bot_token,
+        session=session,
         default=DefaultBotProperties(
             parse_mode=ParseMode.HTML
         ),
