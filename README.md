@@ -133,6 +133,13 @@ cd docs && npm run build
                 </a>
             </td>
             <td align="center">
+                <a href="https://github.com/sahilkhokhar85">
+                    <img src="https://avatars.githubusercontent.com/u/294062498?v=4" width="100;" alt="sahilkhokhar85"/>
+                    <br />
+                    <sub><b>sahilkhokhar85</b></sub>
+                </a>
+            </td>
+            <td align="center">
                 <a href="https://github.com/tromcho">
                     <img src="https://avatars.githubusercontent.com/u/113139586?v=4" width="100;" alt="tromcho"/>
                     <br />
@@ -160,6 +167,8 @@ cd docs && npm run build
                     <sub><b>Danil</b></sub>
                 </a>
             </td>
+		</tr>
+		<tr>
             <td align="center">
                 <a href="https://github.com/AvikaTrivedi">
                     <img src="https://avatars.githubusercontent.com/u/84050503?v=4" width="100;" alt="AvikaTrivedi"/>
@@ -167,8 +176,6 @@ cd docs && npm run build
                     <sub><b>Avika Trivedi</b></sub>
                 </a>
             </td>
-		</tr>
-		<tr>
             <td align="center">
                 <a href="https://github.com/libresoul">
                     <img src="https://avatars.githubusercontent.com/u/69932259?v=4" width="100;" alt="libresoul"/>
