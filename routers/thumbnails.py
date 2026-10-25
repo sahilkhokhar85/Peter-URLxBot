@@ -22,6 +22,11 @@ async def save_thumbnail(message: Message, thumbnail_store: ThumbnailStore) -> N
     await message.answer(text.THUMB_SAVED)
 
 
+@router.message(Command("set_thumb"), F.chat.type == "private")
+async def set_thumbnail_hint(message: Message) -> None:
+    await message.answer("Send me a photo and I will save it as your thumbnail.")
+
+
 @router.message(Command("thumb"), F.chat.type == "private")
 async def show_thumbnail(message: Message, thumbnail_store: ThumbnailStore) -> None:
     if not message.from_user:
@@ -35,7 +40,7 @@ async def show_thumbnail(message: Message, thumbnail_store: ThumbnailStore) -> N
     await message.answer_photo(FSInputFile(thumbnail), caption="Your custom thumbnail.")
 
 
-@router.message(Command("delthumb"), F.chat.type == "private")
+@router.message(Command("delthumb", "delete_thumb"), F.chat.type == "private")
 async def delete_thumbnail(message: Message, thumbnail_store: ThumbnailStore) -> None:
     if not message.from_user:
         return
