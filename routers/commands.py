@@ -9,8 +9,10 @@ from config import Settings
 from services.caption_style_store import CaptionStyleStore
 from services.format_preference_store import FormatPreferenceStore
 from services.thumbnail_store import ThumbnailStore
+from services.user_store import UserStore
 from utils import text
 from utils.callbacks import CaptionStyleCallback, FormatCallback, SettingsCallback
+from utils.runtime import format_uptime, uptime_seconds
 from utils.keyboards import (
     about_keyboard,
     caption_style_keyboard,
@@ -55,6 +57,16 @@ def _is_authorized(message: Message, settings: Settings) -> bool:
     return bool(message.from_user) and message.from_user.id in settings.auth_users
 
 
+async def _about_text(user_store: UserStore) -> str:
+    stats = await user_store.stats()
+    return text.about_text(
+        stats["active"],
+        stats["total"],
+        stats["banned"],
+        format_uptime(uptime_seconds()),
+    )
+
+
 async def _settings_markup(
     user_id: int,
     thumbnail_store: ThumbnailStore,
@@ -89,12 +101,14 @@ async def help_command(message: Message, settings: Settings) -> None:
 
 
 @router.message(Command("about"), F.chat.type == "private")
-async def about_command(message: Message, settings: Settings) -> None:
+async def about_command(
+    message: Message, settings: Settings, user_store: UserStore
+) -> None:
     if not _is_authorized(message, settings):
         await message.answer("🚫 You're not authorized to use this bot.")
         return
     await message.answer(
-        text.ABOUT_TEXT,
+        await _about_text(user_store),
         reply_markup=about_keyboard(),
         link_preview_options=NO_PREVIEW,
     )
@@ -251,7 +265,7 @@ async def _show(message, body: str, keyboard) -> None:
 
 
 async def handle_ui_callback(
-    callback: CallbackQuery, action: str, settings: Settings
+    callback: CallbackQuery, action: str, settings: Settings, user_store: UserStore
 ) -> None:
     message = callback.message
     if not message:
@@ -272,7 +286,7 @@ async def handle_ui_callback(
     elif action == "help":
         await _show(message, text.HELP_TEXT, help_keyboard())
     elif action == "about":
-        await _show(message, text.ABOUT_TEXT, about_keyboard())
+        await _show(message, await _about_text(user_store), about_keyboard())
     elif action == "close":
         await message.delete()
 
