@@ -13,6 +13,7 @@ from aiogram.client.telegram import TelegramAPIServer
 from config import Settings
 from utils.logging_config import setup_logging
 
+from routers.admin import router as admin_router
 from routers.callbacks import router as callbacks_router
 from routers.commands import router as commands_router
 from routers.intake import router as intake_router
@@ -23,6 +24,8 @@ from services.caption_style_store import CaptionStyleStore
 from services.format_preference_store import FormatPreferenceStore
 from services.request_store import RequestStore
 from services.thumbnail_store import ThumbnailStore
+from services.user_store import UserStore
+from utils.middleware import UserTrackerMiddleware
 
 
 async def create_database_pool() -> asyncpg.Pool:
@@ -47,10 +50,18 @@ async def create_dispatcher(
     format_store = FormatPreferenceStore(pool)
     caption_store = CaptionStyleStore(pool)
 
+    user_store = UserStore(pool)
+
     await format_store.init()
     await caption_store.init()
+    await user_store.init()
+
+    tracker = UserTrackerMiddleware(user_store, settings.owner_id)
+    dispatcher.message.outer_middleware(tracker)
+    dispatcher.callback_query.outer_middleware(tracker)
 
     dispatcher.include_router(commands_router)
+    dispatcher.include_router(admin_router)
     dispatcher.include_router(thumbnails_router)
     dispatcher.include_router(intake_router)
     dispatcher.include_router(callbacks_router)
@@ -69,6 +80,7 @@ async def create_dispatcher(
         ),
         format_store=format_store,
         caption_store=caption_store,
+        user_store=user_store,
     )
 
     return dispatcher
