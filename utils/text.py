@@ -1,30 +1,39 @@
-START_TEXT = """<b>Hi {mention}!
+START_TEXT = """<b>Hi {mention}!!</b>
 
-I'm URL Uploader Bot. Just send me any Direct download link and I'll upload file remotely to Telegram.</b>"""
+<blockquote><b>I'm URL Uploader Bot. Just send me any Direct download link and I'll upload file remotely to Telegram.</b></blockquote>"""
 
-HELP_TEXT = """<b>📖 Help
+HELP_TEXT = """<b>📖 Help!!</b>
 
-Following are the commands and their descriptions:
+<b>Send me any direct link and I'll upload it to Telegram.
+Custom name: link|filename</b>
 
-/rename - rename telegram files
+<blockquote><b>/rename - rename telegram files
 /convert2file - upload as document
 /convert2video - upload as video
 /settings - change bot settings
 /set_caption - set default caption
 /set_thumb - set default thumbnail
-/delete_thumb - delete default thumbnail
+/delete_thumb - delete default thumbnail</b></blockquote>
 
-Send any direct link to start. Custom name: link|filename
+<b>Don't forget to check bot settings</b>"""
 
-Don't forget to check bot settings</b>"""
+SETTINGS_TEXT = "<b>⚙️ Here you can change bot settings!!</b>"
 
-ABOUT_TEXT = """<b>📰 About
 
-📝 Language: Python 3
-🧰 Framework: Aiogram 3</b>"""
+def about_text(active: int, total: int, banned: int, uptime: str) -> str:
+    return (
+        "<b>📰 About!!</b>\n\n"
+        "<blockquote>"
+        "<b>📝 Language:</b> Python 3\n"
+        "<b>🧰 Framework:</b> Aiogram 3\n"
+        "<b>📥 Downloader:</b> yt-dlp\n\n"
+        f"<b>🔥 Active users:</b> {active} in last 24 hrs\n"
+        f"<b>👥 Total users:</b> {total}\n"
+        f"<b>🚫 Banned users:</b> {banned}\n\n"
+        f"<b>⏱ Uptime:</b> {uptime}"
+        "</blockquote>"
+    )
 
-# Invisible character (U+2800) so the Settings screen shows only buttons.
-SETTINGS_TEXT = "\u2800"
 
 THUMB_SAVED = "Your custom thumbnail is saved."
 THUMB_MISSING = "You do not have a thumbnail yet. Send a JPG image to save one."
