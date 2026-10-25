@@ -5,6 +5,7 @@ from utils.callbacks import RequestCallback, UiCallback
 from utils.models import DownloadOption
 from utils.callbacks import FormatCallback
 from utils.callbacks import CaptionStyleCallback
+from utils.callbacks import SettingsCallback
 
 
 def start_keyboard() -> InlineKeyboardMarkup:
@@ -14,12 +15,12 @@ def start_keyboard() -> InlineKeyboardMarkup:
             text="Help", callback_data=UiCallback(action="help").pack()
         ),
         InlineKeyboardButton(
-            text="About", callback_data=UiCallback(action="about").pack()
+            text="Settings", callback_data=SettingsCallback(action="open").pack()
         ),
     )
     builder.row(
         InlineKeyboardButton(
-            text="Close", callback_data=UiCallback(action="close").pack()
+            text="About", callback_data=UiCallback(action="about").pack()
         )
     )
     return builder.as_markup()
@@ -29,7 +30,7 @@ def help_keyboard() -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
     builder.row(
         InlineKeyboardButton(
-            text="Home", callback_data=UiCallback(action="home").pack()
+            text="Settings", callback_data=SettingsCallback(action="open").pack()
         ),
         InlineKeyboardButton(
             text="About", callback_data=UiCallback(action="about").pack()
@@ -37,7 +38,7 @@ def help_keyboard() -> InlineKeyboardMarkup:
     )
     builder.row(
         InlineKeyboardButton(
-            text="Close", callback_data=UiCallback(action="close").pack()
+            text="Home", callback_data=UiCallback(action="home").pack()
         )
     )
     return builder.as_markup()
@@ -53,9 +54,47 @@ def about_keyboard() -> InlineKeyboardMarkup:
             text="Help", callback_data=UiCallback(action="help").pack()
         ),
     )
+    return builder.as_markup()
+
+
+CAPTION_LABELS = {
+    "normal": "Normal",
+    "bold": "Bold",
+    "italic": "Italic",
+    "mono": "Mono",
+}
+FORMAT_LABELS = {"media": "Media", "document": "Document"}
+
+
+def settings_keyboard(
+    has_thumbnail: bool, caption_style: str | None, upload_format: str | None
+) -> InlineKeyboardMarkup:
+    builder = InlineKeyboardBuilder()
     builder.row(
         InlineKeyboardButton(
-            text="Close", callback_data=UiCallback(action="close").pack()
+            text=f"🖼 Thumbnail: {'Set' if has_thumbnail else 'Not Set'}",
+            callback_data=SettingsCallback(action="thumb").pack(),
+        ),
+        InlineKeyboardButton(
+            text="🗑 Delete",
+            callback_data=SettingsCallback(action="delthumb").pack(),
+        ),
+    )
+    builder.row(
+        InlineKeyboardButton(
+            text=f"✏️ Caption: {CAPTION_LABELS.get(caption_style or 'normal', 'Normal')}",
+            callback_data=SettingsCallback(action="caption").pack(),
+        )
+    )
+    builder.row(
+        InlineKeyboardButton(
+            text=f"📁 Upload As: {FORMAT_LABELS.get(upload_format or '', 'Ask')}",
+            callback_data=SettingsCallback(action="format").pack(),
+        )
+    )
+    builder.row(
+        InlineKeyboardButton(
+            text="🏠 Home", callback_data=UiCallback(action="home").pack()
         )
     )
     return builder.as_markup()
