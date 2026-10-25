@@ -28,8 +28,10 @@ def _find_option(stored: StoredRequest, action: str) -> DownloadOption | None:
 
 
 @router.callback_query(UiCallback.filter())
-async def ui_callback(query: CallbackQuery, callback_data: UiCallback) -> None:
-    await handle_ui_callback(query, callback_data.action)
+async def ui_callback(
+    query: CallbackQuery, callback_data: UiCallback, settings: Settings
+) -> None:
+    await handle_ui_callback(query, callback_data.action, settings)
 
 
 @router.callback_query(RequestCallback.filter())
