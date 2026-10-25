@@ -117,13 +117,13 @@ async def execute_stored_request(
             else 0
         )
 
-        if file_size > 50 * 1024 * 1024:
+        if file_size > 2000 * 1024 * 1024:
             artifact.path.unlink(missing_ok=True)
 
             await status_message.edit_text(
                 f"⚠️ File too large "
                 f"({file_size / (1024 * 1024):.1f} MB).\n"
-                "Telegram bots can only upload files up to 50 MB."
+                "Telegram bots can only upload files up to 2 GB."
             )
             return
 
