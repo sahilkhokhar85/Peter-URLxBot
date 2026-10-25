@@ -1,4 +1,4 @@
-START_TEXT = """<b>Hi {mention}!!</b>
+START_TEXT = """<b>Hi {mention} !!</b>
 
 <blockquote><b>I'm URL Uploader Bot. Just send me any Direct download link and I'll upload file remotely to Telegram.</b></blockquote>"""
 
