@@ -1,8 +1,8 @@
-START_TEXT = """Hi {mention}!
+START_TEXT = """<b>Hi {mention}!
 
-I'm URL Uploader X bot. Just send me any Direct download link and I'll upload file remotely to Telegram."""
+I'm URL Uploader Bot. Just send me any Direct download link and I'll upload file remotely to Telegram.</b>"""
 
-HELP_TEXT = """📖 <b>Help</b>
+HELP_TEXT = """<b>📖 Help
 
 Following are the commands and their descriptions:
 
@@ -14,12 +14,17 @@ Following are the commands and their descriptions:
 /set_thumb - set default thumbnail
 /delete_thumb - delete default thumbnail
 
-Don't forget to check bot settings"""
+Send any direct link to start. Custom name: link|filename
 
-ABOUT_TEXT = """📰 <b>About</b>
+Don't forget to check bot settings</b>"""
+
+ABOUT_TEXT = """<b>📰 About
 
 📝 Language: Python 3
-🧰 Framework: Aiogram 3"""
+🧰 Framework: Aiogram 3</b>"""
+
+# Invisible character (U+2800) so the Settings screen shows only buttons.
+SETTINGS_TEXT = "\u2800"
 
 THUMB_SAVED = "Your custom thumbnail is saved."
 THUMB_MISSING = "You do not have a thumbnail yet. Send a JPG image to save one."
