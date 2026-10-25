@@ -171,12 +171,12 @@ async def download_direct_file(
 
             if (
                 content_length
-                and content_length > 50 * 1024 * 1024
+                and content_length > 2000 * 1024 * 1024
             ):
                 raise RuntimeError(
                     f"File too large "
                     f"({content_length / (1024 * 1024):.1f} MB). "
-                    "Telegram bots can only upload files up to 50 MB."
+                    "Telegram bots can only upload files up to 2 GB."
                 )
 
             content_type = response.headers.get(
