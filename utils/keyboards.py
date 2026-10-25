@@ -12,15 +12,15 @@ def start_keyboard() -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
     builder.row(
         InlineKeyboardButton(
-            text="Help", callback_data=UiCallback(action="help").pack()
+            text="📖 Help", callback_data=UiCallback(action="help").pack()
         ),
         InlineKeyboardButton(
-            text="Settings", callback_data=SettingsCallback(action="open").pack()
+            text="⚙️ Settings", callback_data=SettingsCallback(action="open").pack()
         ),
     )
     builder.row(
         InlineKeyboardButton(
-            text="About", callback_data=UiCallback(action="about").pack()
+            text="📰 About", callback_data=UiCallback(action="about").pack()
         )
     )
     return builder.as_markup()
@@ -30,15 +30,15 @@ def help_keyboard() -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
     builder.row(
         InlineKeyboardButton(
-            text="Settings", callback_data=SettingsCallback(action="open").pack()
+            text="⚙️ Settings", callback_data=SettingsCallback(action="open").pack()
         ),
         InlineKeyboardButton(
-            text="About", callback_data=UiCallback(action="about").pack()
+            text="📰 About", callback_data=UiCallback(action="about").pack()
         ),
     )
     builder.row(
         InlineKeyboardButton(
-            text="Home", callback_data=UiCallback(action="home").pack()
+            text="🏠 Home", callback_data=UiCallback(action="home").pack()
         )
     )
     return builder.as_markup()
@@ -48,10 +48,10 @@ def about_keyboard() -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
     builder.row(
         InlineKeyboardButton(
-            text="Home", callback_data=UiCallback(action="home").pack()
+            text="🏠 Home", callback_data=UiCallback(action="home").pack()
         ),
         InlineKeyboardButton(
-            text="Help", callback_data=UiCallback(action="help").pack()
+            text="📖 Help", callback_data=UiCallback(action="help").pack()
         ),
     )
     return builder.as_markup()
@@ -113,7 +113,7 @@ def format_keyboard(token: str, options: list[DownloadOption]) -> InlineKeyboard
         )
     builder.row(
         InlineKeyboardButton(
-            text="Close", callback_data=UiCallback(action="close").pack()
+            text="❌ Close", callback_data=UiCallback(action="close").pack()
         )
     )
     return builder.as_markup()
