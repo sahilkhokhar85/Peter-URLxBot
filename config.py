@@ -31,6 +31,7 @@ class Settings:
     chunk_size: int
     http_proxy: str
     process_max_timeout: int
+    start_image_url: str = ""
 
     @classmethod
     def from_env(cls) -> "Settings":
@@ -58,6 +59,9 @@ class Settings:
             chunk_size=_parse_chunk_size(os.environ.get("CHUNK_SIZE")),
             http_proxy=os.environ.get("HTTP_PROXY", "").strip(),
             process_max_timeout=int(os.environ.get("PROCESS_MAX_TIMEOUT", "3700")),
+            start_image_url=os.environ.get(
+                "START_IMAGE_URL", "https://files.catbox.moe/qzxtbk.webp"
+            ).strip(),
         )
 
     @property
