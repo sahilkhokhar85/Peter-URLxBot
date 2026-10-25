@@ -1,52 +1,25 @@
-START_TEXT = """Hi, <b>{name}</b>
+START_TEXT = """Hi {mention}!
 
-I can take a direct file link or a supported media URL, download it, and upload the result back to Telegram.
+I'm URL Uploader X bot. Just send me any Direct download link and I'll upload file remotely to Telegram."""
 
-<b>What you can send</b>
-- direct file URLs
-- YouTube and other supported `yt-dlp` links
-- `url|filename`
-- `url|filename|username|password`
-- `url * filename`
+HELP_TEXT = """📖 <b>Help</b>
 
-Use the buttons below for a quick tour, or send a link to get started."""
+Following are the commands and their descriptions:
 
-HELP_TEXT = """<b>How to use this bot</b>
+/rename - rename telegram files
+/convert2file - upload as document
+/convert2video - upload as video
+/settings - change bot settings
+/set_caption - set default caption
+/set_thumb - set default thumbnail
+/delete_thumb - delete default thumbnail
 
-Send a message containing any of these formats:
+Don't forget to check bot settings"""
 
-1. <b>Direct link</b>
-   <code>https://example.com/file.mp4</code>
+ABOUT_TEXT = """📰 <b>About</b>
 
-2. <b>Direct link with a custom file name</b>
-   <code>https://example.com/file.mp4|my-video.mp4</code>
-
-3. <b>Protected URL with login details</b>
-   <code>https://example.com/file|my-file.mp4|username|password</code>
-
-4. <b>Alternate custom-name format</b>
-   <code>https://example.com/file.mp4 * renamed.mp4</code>
-
-<b>Extra commands</b>
-- <code>/thumb</code> shows your saved thumbnail
-- <code>/delthumb</code> removes your saved thumbnail
-
-If the source supports multiple formats, I will show you a selection menu before uploading."""
-
-ABOUT_TEXT = """<b>All Url Uploader</b>
-
-Built with <a href="https://docs.aiogram.dev/">aiogram 3</a> and <a href="https://github.com/yt-dlp/yt-dlp">yt-dlp</a>.
-
-<b>Repository</b>
-<a href="https://github.com/kalanakt/All-Url-Uploader">github.com/kalanakt/All-Url-Uploader</a>
-
-<b>What it does</b>
-- downloads supported media from direct URLs and `yt-dlp` sources
-- lets you choose formats when the source exposes multiple options
-- uploads video, audio, and documents back to Telegram
-- supports custom per-user thumbnails
-
-Send a supported link whenever you are ready."""
+📝 Language: Python 3
+🧰 Framework: Aiogram 3"""
 
 THUMB_SAVED = "Your custom thumbnail is saved."
 THUMB_MISSING = "You do not have a thumbnail yet. Send a JPG image to save one."
