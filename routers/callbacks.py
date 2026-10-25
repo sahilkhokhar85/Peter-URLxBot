@@ -11,6 +11,7 @@ from services.caption_style_store import CaptionStyleStore
 from services.execution import execute_stored_request
 from services.request_store import RequestStore
 from services.thumbnail_store import ThumbnailStore
+from services.user_store import UserStore
 from utils import text
 from utils.callbacks import RequestCallback, UiCallback
 from utils.logging_config import safe_url_label
@@ -29,9 +30,12 @@ def _find_option(stored: StoredRequest, action: str) -> DownloadOption | None:
 
 @router.callback_query(UiCallback.filter())
 async def ui_callback(
-    query: CallbackQuery, callback_data: UiCallback, settings: Settings
+    query: CallbackQuery,
+    callback_data: UiCallback,
+    settings: Settings,
+    user_store: UserStore,
 ) -> None:
-    await handle_ui_callback(query, callback_data.action, settings)
+    await handle_ui_callback(query, callback_data.action, settings, user_store)
 
 
 @router.callback_query(RequestCallback.filter())
