@@ -14,3 +14,7 @@ class FormatCallback(CallbackData, prefix="fmt"):
 
 class CaptionStyleCallback(CallbackData, prefix="cap"):
     value: str
+
+
+class SettingsCallback(CallbackData, prefix="set"):
+    action: str
