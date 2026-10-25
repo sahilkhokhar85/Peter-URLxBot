@@ -1,7 +1,6 @@
 import html
 
 from aiogram import F, Router
-from aiogram.exceptions import TelegramAPIError
 from aiogram.filters import Command
 from aiogram.types import CallbackQuery, LinkPreviewOptions, Message
 
@@ -34,22 +33,22 @@ def _mention(user) -> str:
     return f'<a href="tg://user?id={uid}">{name}</a>'
 
 
+def _start_preview(settings: Settings) -> LinkPreviewOptions:
+    """Show the start image as a large link preview above the text."""
+    if not settings.start_image_url:
+        return NO_PREVIEW
+    return LinkPreviewOptions(
+        url=settings.start_image_url,
+        show_above_text=True,
+        prefer_large_media=True,
+    )
+
+
 async def _send_start(target: Message, user, settings: Settings) -> None:
-    caption = text.START_TEXT.format(mention=_mention(user))
-    if settings.start_image_url:
-        try:
-            await target.answer_photo(
-                settings.start_image_url,
-                caption=caption,
-                reply_markup=start_keyboard(),
-            )
-            return
-        except TelegramAPIError:
-            pass
     await target.answer(
-        caption,
+        text.START_TEXT.format(mention=_mention(user)),
         reply_markup=start_keyboard(),
-        link_preview_options=NO_PREVIEW,
+        link_preview_options=_start_preview(settings),
     )
 
 
@@ -241,27 +240,26 @@ async def settings_callback(
         user_id, thumbnail_store, format_store, caption_store
     )
 
-    if action == "open" and getattr(message, "photo", None):
-        # The start screen is a photo message. Replace it with a buttons-only screen.
-        await message.answer(text.SETTINGS_TEXT, reply_markup=markup)
-        await message.delete()
-    elif action == "open":
-        await message.edit_text(text.SETTINGS_TEXT, reply_markup=markup)
+    if action == "open":
+        await message.edit_text(
+            text.SETTINGS_TEXT,
+            reply_markup=markup,
+            link_preview_options=NO_PREVIEW,
+        )
     else:
         await message.edit_reply_markup(reply_markup=markup)
 
     await query.answer()
 
 
-async def _show(message, body: str, keyboard) -> None:
-    if getattr(message, "photo", None):
-        await message.edit_caption(caption=body, reply_markup=keyboard)
-    else:
-        await message.edit_text(
-            body,
-            reply_markup=keyboard,
-            link_preview_options=NO_PREVIEW,
-        )
+async def _show(
+    message, body: str, keyboard, preview: LinkPreviewOptions = NO_PREVIEW
+) -> None:
+    await message.edit_text(
+        body,
+        reply_markup=keyboard,
+        link_preview_options=preview,
+    )
 
 
 async def handle_ui_callback(
@@ -273,16 +271,12 @@ async def handle_ui_callback(
         return
 
     if action == "home":
-        if getattr(message, "photo", None) or not settings.start_image_url:
-            await _show(
-                message,
-                text.START_TEXT.format(mention=_mention(callback.from_user)),
-                start_keyboard(),
-            )
-        else:
-            # Coming back from a text screen (Settings): bring the start image back.
-            await _send_start(message, callback.from_user, settings)
-            await message.delete()
+        await _show(
+            message,
+            text.START_TEXT.format(mention=_mention(callback.from_user)),
+            start_keyboard(),
+            _start_preview(settings),
+        )
     elif action == "help":
         await _show(message, text.HELP_TEXT, help_keyboard())
     elif action == "about":
